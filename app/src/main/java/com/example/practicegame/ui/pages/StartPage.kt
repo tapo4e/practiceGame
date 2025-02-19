@@ -15,7 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -51,7 +53,7 @@ fun StartPage(
                 .align(Alignment.TopCenter)
                 .padding(top = 279.dp)
                 .size(width = 92.dp, height = 66.dp)
-                .background(Color(0xFFCA2E2E))
+                .background(colorResource(R.color.score_color))
 
         ) {
             Text(
@@ -67,11 +69,11 @@ fun StartPage(
                 .align(Alignment.TopCenter)
                 .padding(top = 357.dp)
                 .size(width = 165.dp, height = 49.dp)
-                .background(Color(0xFFCA2E2E))
+                .background(colorResource(R.color.score_color))
 
         ) {
             Text(
-                text = "Best Score",
+                text = stringResource(id = R.string.best_score),
                 fontSize = 23.sp,
                 fontFamily = FontFamily(Font(R.font.sfpro_text_bold)),
                 color = Color.White,
@@ -87,7 +89,7 @@ fun StartPage(
             colors = ButtonDefaults.buttonColors(Color.White)
         ) {
             Text(
-                text = "START GAME",
+                text = stringResource(id = R.string.start_button),
                 color = Color.Black,
                 fontSize = 23.sp,
                 fontWeight = FontWeight(1000),
