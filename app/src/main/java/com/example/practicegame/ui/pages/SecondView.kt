@@ -1,6 +1,7 @@
 package com.example.practicegame.ui.pages
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -39,6 +40,7 @@ import com.example.practicegame.util.getMetrics
 import com.example.practicegame.util.goLeft
 import com.example.practicegame.util.goRight
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 
 @SuppressLint("ResourceAsColor")
 @Composable
@@ -46,7 +48,10 @@ fun SecondView(
     modifier: Modifier = Modifier,
     height: Int = getMetrics(LocalContext.current).heightPixels,
     width: Int = getMetrics(LocalContext.current).widthPixels / 2 - 60,
-    goToLoseScreen:(score:Int) -> Unit
+    goToLoseScreen:(score:Int) -> Unit,
+    timer:String,
+    endTimer: Boolean,
+    goToStartScreen:()->Unit
 ) {
     var fallingObjects by remember {
         mutableStateOf(
@@ -64,7 +69,7 @@ fun SecondView(
     val policeCar = ImageBitmap.imageResource(id = R.drawable.police_car)
     val car = ImageBitmap.imageResource(id = R.drawable.car)
 
-    LaunchedEffect(gameLoop) {
+    LaunchedEffect(gameLoop || endTimer) {
         while (gameLoop) {
             delay(16L)
             fallingObjects = fallingObjects.map { obj ->
@@ -76,7 +81,7 @@ fun SecondView(
                 }
             }
             fallingObjects.forEach { obj ->
-                if (obj.y == 1650 && obj.x + 110 == playerPosition.x && obj.id != idCar) {
+                if ((obj.y == 1650 && obj.x + 110 == playerPosition.x && obj.id != idCar)) {
                     gameLoop = false
                     goToLoseScreen(score)
                 }
@@ -84,7 +89,7 @@ fun SecondView(
             if (fallingObjects[0].y >= (playerPosition.y + 103.dp.value)) {
                 score = score.inc()
             }
-
+            goToStartScreen()
         }
     }
 
@@ -105,7 +110,7 @@ fun SecondView(
                 fontSize = 30.sp
             )
             Text(
-                text = "Time", color = Color.White,
+                text = "Time: $timer", color = Color.White,
                 fontSize = 30.sp,
                 modifier = modifier.align(
                     Alignment.TopEnd
@@ -161,5 +166,5 @@ fun SecondView(
 @Composable
 @Preview
 fun PreviewSecondView() {
-    SecondView(goToLoseScreen = {})
+    SecondView(goToLoseScreen = {}, timer = "", endTimer = false, goToStartScreen = {})
 }
