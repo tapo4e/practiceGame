@@ -46,7 +46,7 @@ fun SecondView(
     modifier: Modifier = Modifier,
     height: Int = getMetrics(LocalContext.current).heightPixels,
     width: Int = getMetrics(LocalContext.current).widthPixels / 2 - 60,
-    goToLoseScreen:() -> Unit
+    goToLoseScreen:(score:Int) -> Unit
 ) {
     var fallingObjects by remember {
         mutableStateOf(
@@ -78,7 +78,7 @@ fun SecondView(
             fallingObjects.forEach { obj ->
                 if (obj.y == 1650 && obj.x + 110 == playerPosition.x && obj.id != idCar) {
                     gameLoop = false
-                    goToLoseScreen()
+                    goToLoseScreen(score)
                 }
             }
             if (fallingObjects[0].y >= (playerPosition.y + 103.dp.value)) {
