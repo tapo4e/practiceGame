@@ -1,7 +1,6 @@
 package com.example.practicegame.ui.pages
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,7 +39,6 @@ import com.example.practicegame.util.getMetrics
 import com.example.practicegame.util.goLeft
 import com.example.practicegame.util.goRight
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 
 @SuppressLint("ResourceAsColor")
 @Composable
