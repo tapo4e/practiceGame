@@ -17,9 +17,10 @@ import com.example.practicegame.R
 import kotlinx.coroutines.delay
 
 @Composable
-fun FaultView(modifier: Modifier = Modifier,
-              openStartScreen:() ->Unit
-              ) {
+fun FaultView(
+    modifier: Modifier = Modifier,
+    openStartScreen: () -> Unit
+) {
     LaunchedEffect(Unit) {
         delay(3000)
         openStartScreen()

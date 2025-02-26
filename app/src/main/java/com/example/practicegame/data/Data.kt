@@ -13,6 +13,7 @@ class Data(private val context: Context) {
     companion object {
         val SCORE = intPreferencesKey("score")
     }
+
     suspend fun saveScore(score: Int) {
         context.dataStore.edit { preferences ->
             preferences[SCORE] = score
