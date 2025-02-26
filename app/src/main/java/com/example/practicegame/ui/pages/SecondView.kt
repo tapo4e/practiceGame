@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +40,9 @@ import com.example.practicegame.util.getMetrics
 import com.example.practicegame.util.goLeft
 import com.example.practicegame.util.goRight
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 @SuppressLint("ResourceAsColor")
 @Composable
@@ -46,10 +50,10 @@ fun SecondView(
     modifier: Modifier = Modifier,
     height: Int = getMetrics(LocalContext.current).heightPixels,
     width: Int = getMetrics(LocalContext.current).widthPixels / 2 - 60,
-    goToLoseScreen:(score:Int) -> Unit,
-    timer:String,
-    endTimer: Boolean,
-    goToStartScreen:()->Unit
+    goToLoseScreen: (score: Int) -> Unit,
+    timer: String,
+    endTimer: StateFlow<Boolean>,
+    goToStartScreen: () -> Unit
 ) {
     var fallingObjects by remember {
         mutableStateOf(
@@ -60,6 +64,7 @@ fun SecondView(
             )
         )
     }
+    val isRun by endTimer.collectAsState()
     var playerPosition by remember { mutableStateOf(IntOffset(width, 2000)) }
     var idCar by remember { mutableIntStateOf((0..2).random()) }
     var gameLoop by remember { mutableStateOf(true) }
@@ -67,9 +72,13 @@ fun SecondView(
     val policeCar = ImageBitmap.imageResource(id = R.drawable.police_car)
     val car = ImageBitmap.imageResource(id = R.drawable.car)
 
-    LaunchedEffect(gameLoop || endTimer) {
+    LaunchedEffect(gameLoop) {
         while (gameLoop) {
             delay(16L)
+            if(!isRun){
+                gameLoop = false
+                goToStartScreen()
+            }
             fallingObjects = fallingObjects.map { obj ->
                 if (obj.y >= (playerPosition.y + 103.dp.value)) {
                     idCar = (0..2).random()
@@ -82,12 +91,12 @@ fun SecondView(
                 if ((obj.y == 1650 && obj.x + 110 == playerPosition.x && obj.id != idCar)) {
                     gameLoop = false
                     goToLoseScreen(score)
+
                 }
             }
             if (fallingObjects[0].y >= (playerPosition.y + 103.dp.value)) {
                 score = score.inc()
             }
-            goToStartScreen()
         }
     }
 
@@ -164,5 +173,5 @@ fun SecondView(
 @Composable
 @Preview
 fun PreviewSecondView() {
-    SecondView(goToLoseScreen = {}, timer = "", endTimer = false, goToStartScreen = {})
+    SecondView(goToLoseScreen = {}, timer = "", endTimer = MutableStateFlow(true).asStateFlow(), goToStartScreen = {})
 }

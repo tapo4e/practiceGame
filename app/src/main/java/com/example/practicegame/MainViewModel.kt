@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel(private  val  dataBase: Data) : ViewModel() {
+class MainViewModel(private val dataBase: Data) : ViewModel() {
 
     private val _timeLeft = MutableStateFlow(0)
     val timeLeft: StateFlow<Int> = _timeLeft.asStateFlow()
@@ -46,7 +46,7 @@ class MainViewModel(private  val  dataBase: Data) : ViewModel() {
         }
     }
 
-    fun startTimer(minutes: Int = 1 ) {
+    fun startTimer(minutes: Int = 1) {
         totalTime = minutes * 60
         _timeLeft.value = totalTime
         startOrResumeTimer()
@@ -58,7 +58,7 @@ class MainViewModel(private  val  dataBase: Data) : ViewModel() {
         _isRunning.value = false
     }
 
-     fun startOrResumeTimer() {
+    fun startOrResumeTimer() {
         _isRunning.value = true
         timerJob = viewModelScope.launch {
             while (_timeLeft.value > 0) {
@@ -69,12 +69,12 @@ class MainViewModel(private  val  dataBase: Data) : ViewModel() {
         }
     }
 
-     fun pauseTimer() {
+    fun pauseTimer() {
         timerJob?.cancel()
         _isRunning.value = false
     }
 
-     fun formatTime(seconds: Int): String {
+    fun formatTime(seconds: Int): String {
         val minutes = seconds / 60
         val remainingSeconds = seconds % 60
         return String.format("%02d:%02d", minutes, remainingSeconds)
